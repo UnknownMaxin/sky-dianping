@@ -1,0 +1,36 @@
+server:
+  port: 8081
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    druid:
+      driver-class-name: ${maxin.datasource.driver-class-name},
+      url: jdbc:mysql://${maxin.datasource.host}:${maxin.datasource.port}/${maxin.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${maxin.datasource.username}
+      password: ${maxin.datasource.password}
+  redis:
+    host: ${maxin.redis.host}
+    port: ${maxin.redis.port}
+    database: ${maxin.redis.database}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.maxin.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+mybatis-plus:
+  type-aliases-package: com.maxin.entity # 别名扫描包
+
+logging:
+  level:
+    com.maxin:
+      mapper: debug
+      service: info
+      controller: info
+
