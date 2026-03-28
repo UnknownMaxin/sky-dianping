@@ -1,7 +1,9 @@
 package com.maxin.service;
 
 import com.maxin.dto.LoginFormDTO;
+import com.maxin.entity.UserInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public interface UserService {
@@ -19,4 +21,17 @@ public interface UserService {
      * @param session
      */
     void sendCode(String phone, HttpSession session);
+
+    /**
+     * 退出登录
+     * @param request
+     */
+    void logout(HttpServletRequest request);
+
+    /**
+     * 获取用户详情
+     * @param userId
+     * @return
+     */
+    UserInfo getUserInfo(Long userId);
 }

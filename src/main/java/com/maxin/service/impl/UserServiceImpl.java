@@ -4,24 +4,31 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.maxin.constant.MessageConstant;
 import com.maxin.constant.RedisConstant;
 import com.maxin.dto.LoginFormDTO;
 import com.maxin.dto.UserDTO;
 import com.maxin.entity.User;
+import com.maxin.entity.UserInfo;
 import com.maxin.exception.PhoneInvalidException;
 import com.maxin.exception.VerificationCodeException;
+import com.maxin.mapper.UserInfoMapper;
 import com.maxin.mapper.UserMapper;
+import com.maxin.result.Result;
 import com.maxin.service.UserService;
 import com.maxin.utils.RegexUtils;
+import com.maxin.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +40,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -47,7 +58,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         Object cacheCode = redisTemplate.opsForValue().get(RedisConstant.LOGIN_CODE_KEY + loginFormDTO.getPhone());
-        //Object cacheCode = session.getAttribute("code");
         String code = loginFormDTO.getCode();
         if (cacheCode == null || !cacheCode.equals(code)) {
             throw new VerificationCodeException(MessageConstant.INCORRECT_VERIFICATION_CODE);
@@ -62,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String token = UUID.randomUUID().toString();
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
-        // 教程里这办法好麻烦，以后自己搓的话还是用RedisTemplate吧
+
         Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(),
                 CopyOptions.create()
                         .setIgnoreNullValue(true)
@@ -91,6 +101,40 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         log.debug("短信验证码：" + code);
     }
 
+    /**
+     * 退出登录
+     * @param request
+     */
+    public void logout(HttpServletRequest request) {
+        String token = request.getHeader("authorization");
+        if (StrUtil.isNotBlank(token)) {
+            String tokenKey = RedisConstant.LOGIN_USER_KEY + token;
+            redisTemplate.delete(tokenKey);
+        }
+        UserHolder.removeUser();
+    }
+
+    /**
+     * 获取用户详情
+     * @param userId
+     * @return
+     */
+    public UserInfo getUserInfo(Long userId) {
+        UserInfo userInfo = userInfoMapper.getById(userId);
+        if (userInfo == null) {
+            return null;
+        }
+        // 说实话，我没搞懂原项目为什么要这么写？？？
+        userInfo.setCreateTime(LocalDateTime.now());
+        userInfo.setUpdateTime(LocalDateTime.now());
+        return userInfo;
+    }
+
+    /**
+     * 根据手机号创建新用户
+     * @param phone
+     * @return
+     */
     private User createUserWithPhone(String phone) {
         User user = new User();
         user.setPhone(phone);
