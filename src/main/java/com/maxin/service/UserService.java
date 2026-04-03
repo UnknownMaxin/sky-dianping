@@ -1,12 +1,14 @@
 package com.maxin.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.maxin.dto.LoginFormDTO;
+import com.maxin.entity.User;
 import com.maxin.entity.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public interface UserService {
+public interface UserService extends IService<User> {
 
     /**
      * 用户登录

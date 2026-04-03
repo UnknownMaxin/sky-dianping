@@ -16,4 +16,6 @@ public class MessageConstant {
     public static final String INSUFFICIENT_VOUCHERS = "优惠券库存不足！";
     public static final String MAXIMUM_PURCHASE_TIMES = "已达到最大购买数量！";
 
+    public static final String SAVE_BLOG_FAILED = "新增笔记失败！";
+    public static final String BLOG_IS_NOT_EXIST = "笔记不存在！";
 }
