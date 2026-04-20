@@ -1,6 +1,7 @@
 package com.maxin.utils;
 
-import com.github.xiaoymin.knife4j.core.util.StrUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 /**
  * @author 虎哥

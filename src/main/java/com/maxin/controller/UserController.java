@@ -6,18 +6,18 @@ import com.maxin.entity.UserInfo;
 import com.maxin.result.Result;
 import com.maxin.service.UserService;
 import com.maxin.utils.UserHolder;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
-@Api(tags = "用户相关接口")
+@Tag(name = "用户相关接口")
 @Slf4j
 public class UserController {
 
@@ -31,7 +31,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    @ApiOperation("账号登录")
+    @Operation(summary = "账号登录")
     public Result login(@RequestBody LoginFormDTO loginFormDTO, HttpSession session) {
         userService.login(loginFormDTO, session);
         return Result.success();
@@ -44,7 +44,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/code")
-    @ApiOperation("发送手机验证码")
+    @Operation(summary = "发送手机验证码")
     public Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
         userService.sendCode(phone, session);
         return Result.success();
@@ -56,7 +56,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/logout")
-    @ApiOperation("退出登录")
+    @Operation(summary = "退出登录")
     public Result logout(HttpServletRequest request) {
         userService.logout(request);
         return Result.success();

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,6 +44,7 @@ public class CacheClientUtils {
     public <R, ID> R queryWithPassThrough(String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit unit) {
         String key = keyPrefix + id;
         String json = redisTemplate.opsForValue().get(key).toString();
+        log.info("queryWithPassThrough key:{}, json:{}", key, json);
         if (StrUtil.isNotBlank(json)) {
             return JSONUtil.toBean(json, type);
         }

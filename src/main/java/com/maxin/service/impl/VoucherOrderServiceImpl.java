@@ -9,18 +9,18 @@ import com.maxin.service.SeckillVoucherService;
 import com.maxin.service.VoucherOrderService;
 import com.maxin.utils.RedisIdWorker;
 import com.maxin.utils.UserHolder;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -31,13 +31,13 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, VoucherOrder> implements VoucherOrderService {
 
-    @Resource
+    @Autowired
     private SeckillVoucherService seckillVoucherService;
-    @Resource
+    @Autowired
     private RedisIdWorker redisIdWorker;
-    @Resource
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
 
     private static final DefaultRedisScript<Long> SECKILL_VOUCHER_SCRIPT;

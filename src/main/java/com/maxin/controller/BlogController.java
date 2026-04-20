@@ -7,17 +7,17 @@ import com.maxin.result.Result;
 import com.maxin.entity.Blog;
 import com.maxin.result.ScrollResult;
 import com.maxin.service.BlogService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 @RestController
 @RequestMapping("/blog")
-@Api(tags = "笔记相关接口")
+@Tag(name = "笔记相关接口")
 @Slf4j
 public class BlogController {
 
@@ -30,7 +30,7 @@ public class BlogController {
      * @return
      */
     @PostMapping
-    @ApiOperation("新增笔记")
+    @Operation(summary = "新增笔记")
     public Result<Long> saveBlog(@RequestBody Blog blog) {
         blogService.saveBlog(blog);
         return Result.success(blog.getId());
@@ -42,7 +42,7 @@ public class BlogController {
      * @return
      */
     @PutMapping("/like/{id}")
-    @ApiOperation("点赞笔记")
+    @Operation(summary = "点赞笔记")
     public Result likeBlog(@PathVariable("id") Long id) {
         blogService.likeBlog(id);
         return Result.success();
@@ -54,7 +54,7 @@ public class BlogController {
      * @return
      */
     @GetMapping("/of/me")
-    @ApiOperation("查找笔记")
+    @Operation(summary = "查找笔记")
     public Result<List<Blog>> queryMyBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         List<Blog> records = blogService.queryMyBlog(current);
         return Result.success(records);
@@ -66,7 +66,7 @@ public class BlogController {
      * @return
      */
     @GetMapping("/hot")
-    @ApiOperation("查找热门笔记")
+    @Operation(summary = "查找热门笔记")
     public Result<List<Blog>> queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         List<Blog> records = blogService.queryHotBlog(current);
         return Result.success(records);
@@ -78,7 +78,7 @@ public class BlogController {
      * @return
      */
     @GetMapping("/{id}")
-    @ApiOperation("根据id查找笔记")
+    @Operation(summary = "根据id查找笔记")
     public Result<Blog> queryBlogById(@PathVariable("id") Long id) {
         Blog records = blogService.queryBlogById(id);
         return Result.success(records);
@@ -89,8 +89,8 @@ public class BlogController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
-    @ApiOperation("查询top5的点赞用户")
+    @GetMapping("/likes/{id}")
+    @Operation(summary = "查询top5的点赞用户")
     public Result<List<UserDTO>> queryBlogLikes(@PathVariable("id") Long id) {
         List<UserDTO> records = blogService.queryBlogLikes(id);
         return Result.success(records);
@@ -103,7 +103,7 @@ public class BlogController {
      * @return
      */
     @GetMapping("/of/user")
-    @ApiOperation("根据用户id查询笔记")
+    @Operation(summary = "根据用户id查询笔记")
     public Result<List<Blog>> queryBlogByUserId(
             @RequestParam(value = "current", defaultValue = "1") Integer current,
             @RequestParam("id") Long id) {
@@ -122,7 +122,7 @@ public class BlogController {
      * @return
      */
     @GetMapping("/of/follow")
-    @ApiOperation("查询关注用户的笔记")
+    @Operation(summary = "查询关注用户的笔记")
     public Result<ScrollResult> queryBlogOfFollow(
             @RequestParam("lastId") Long max, @RequestParam(value = "offset", defaultValue = "0") Integer offset){
         ScrollResult result = blogService.queryBlogOfFollow(max, offset);

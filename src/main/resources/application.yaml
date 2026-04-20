@@ -5,16 +5,18 @@ spring:
     active: dev
   main:
     allow-circular-references: true
+    allow-bean-definition-overriding: true
   datasource:
     druid:
-      driver-class-name: ${maxin.datasource.driver-class-name},
+      driver-class-name: ${maxin.datasource.driver-class-name}
       url: jdbc:mysql://${maxin.datasource.host}:${maxin.datasource.port}/${maxin.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${maxin.datasource.username}
       password: ${maxin.datasource.password}
-  redis:
-    host: ${maxin.redis.host}
-    port: ${maxin.redis.port}
-    database: ${maxin.redis.database}
+  data:
+    redis:
+      host: ${maxin.redis.host}
+      port: ${maxin.redis.port}
+      database: ${maxin.redis.database}
 
 mybatis:
   #mapper配置文件
@@ -34,3 +36,16 @@ logging:
       service: info
       controller: info
 
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.maxin.controller

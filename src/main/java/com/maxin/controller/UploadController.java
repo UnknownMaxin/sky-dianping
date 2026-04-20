@@ -7,8 +7,8 @@ import com.maxin.exception.DeleteBlogImgException;
 import com.maxin.exception.UploadException;
 import com.maxin.result.Result;
 import com.maxin.constant.SystemConstant;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/upload")
-@Api(tags = "上传文件相关接口")
+@Tag(name = "上传文件相关接口")
 @Slf4j
 public class UploadController {
 
@@ -29,7 +29,7 @@ public class UploadController {
      * @return
      */
     @PostMapping("/blog")
-    @ApiOperation("上传博客图片")
+    @Operation(summary = "上传博客图片")
     public Result<String> uploadImage(@RequestParam("file") MultipartFile image) {
         try {
             // 获取原始文件名称
@@ -52,7 +52,7 @@ public class UploadController {
      * @return
      */
     @GetMapping("/blog/delete")
-    @ApiOperation("删除博客图片")
+    @Operation(summary = "删除博客图片")
     public Result deleteBlogImg(@RequestParam("name") String filename) {
         File file = new File(SystemConstant.IMAGE_UPLOAD_DIR, filename);
         if (file.isDirectory()) {

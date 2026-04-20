@@ -5,8 +5,8 @@ import com.maxin.dto.LoginFormDTO;
 import com.maxin.entity.User;
 import com.maxin.entity.UserInfo;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public interface UserService extends IService<User> {
 

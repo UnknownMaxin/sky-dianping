@@ -5,11 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import com.maxin.dto.UserDTO;
 import com.maxin.constant.RedisConstant;
 import com.maxin.utils.UserHolder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         Object cacheCode = redisTemplate.opsForValue().get(RedisConstant.LOGIN_CODE_KEY + loginFormDTO.getPhone());
         String code = loginFormDTO.getCode();
-        if (cacheCode == null || !cacheCode.equals(code)) {
+        if (cacheCode == null || !cacheCode.toString().equals(code)) {
             throw new VerificationCodeException(MessageConstant.INCORRECT_VERIFICATION_CODE);
         }
 
@@ -98,7 +98,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisTemplate.opsForValue().set(RedisConstant.LOGIN_CODE_KEY + phone, code, RedisConstant.LOGIN_CODE_TTL, TimeUnit.MINUTES);
 
         // TODO：发送验证码功能
-        log.debug("短信验证码：" + code);
+        log.info("短信验证码：" + code);
     }
 
     /**
