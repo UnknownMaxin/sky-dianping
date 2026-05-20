@@ -12,10 +12,12 @@ public interface UserService extends IService<User> {
 
     /**
      * 用户登录
+     *
      * @param loginFormDTO
      * @param session
+     * @return
      */
-    void login(LoginFormDTO loginFormDTO, HttpSession session);
+    String login(LoginFormDTO loginFormDTO, HttpSession session);
 
     /**
      * 发送验证码

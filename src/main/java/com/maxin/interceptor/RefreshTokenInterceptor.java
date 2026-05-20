@@ -7,12 +7,14 @@ import com.maxin.constant.RedisConstant;
 import com.maxin.utils.UserHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class RefreshTokenInterceptor implements HandlerInterceptor {
 
     private RedisTemplate redisTemplate;
@@ -24,6 +26,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("authorization");
+        log.info("token:{}", token);
         if (StrUtil.isBlank(token)) {
             return true;
         }
@@ -31,6 +34,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         // 获取hash
         String tokenKey = RedisConstant.LOGIN_USER_KEY + token;
         Map<Object, Object> userMap = redisTemplate.opsForHash().entries(tokenKey);
+        log.info("map:{}", userMap.toString());
         if (userMap.isEmpty()) {
             return true;
         }

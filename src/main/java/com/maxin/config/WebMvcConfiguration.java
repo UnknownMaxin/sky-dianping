@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-@Configuration
+// @Configuration
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
@@ -19,11 +19,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginInterceptor()).excludePathPatterns(
-//                "/user/code", "/user/login", "/blog/hot", "/shop/**", "/shop-type/**", "/upload/**", "/voucher/**",
-//                "/webjars/**", "/swagger-resources/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
-//                "/swagger-ui/index.html", "/favicon.ico", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js"
-//                ).order(1);
+        registry.addInterceptor(new LoginInterceptor()).excludePathPatterns(
+                "/user/code", "/user/login", "/blog/hot", "/shop/**", "/shop-type/**", "/upload/**", "/voucher/**",
+                "/webjars/**", "/swagger-resources/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**",
+                "/swagger-ui/index.html", "/favicon.ico", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js"
+                ).order(1);
         registry.addInterceptor(new RefreshTokenInterceptor(redisTemplate)).addPathPatterns("/**").order(0);
     }
 
@@ -31,7 +31,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         // Swagger UI 资源映射
         registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/swagger-ui/4.15.5/");
-        registry.addResourceHandler("/swagger-ui.html")
+        registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
         // API 文档资源映射
         registry.addResourceHandler("/v3/api-docs/**")

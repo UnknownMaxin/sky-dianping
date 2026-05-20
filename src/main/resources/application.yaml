@@ -17,6 +17,12 @@ spring:
       host: ${maxin.redis.host}
       port: ${maxin.redis.port}
       database: ${maxin.redis.database}
+  ai:
+    openai:
+      base-url: ${maxin.ai.openai.base-url}
+      api-key: ${maxin.ai.openai.api-key}
+      chat:
+        model: ${maxin.ai.openai.chat.model}
 
 mybatis:
   #mapper配置文件

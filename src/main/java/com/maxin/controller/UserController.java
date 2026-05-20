@@ -32,9 +32,9 @@ public class UserController {
      */
     @PostMapping("/login")
     @Operation(summary = "账号登录")
-    public Result login(@RequestBody LoginFormDTO loginFormDTO, HttpSession session) {
-        userService.login(loginFormDTO, session);
-        return Result.success();
+    public Result<String> login(@RequestBody LoginFormDTO loginFormDTO, HttpSession session) {
+        String token = userService.login(loginFormDTO, session);
+        return Result.success(token);
     }
 
     /**

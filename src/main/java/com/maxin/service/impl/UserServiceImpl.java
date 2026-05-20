@@ -15,7 +15,6 @@ import com.maxin.exception.PhoneInvalidException;
 import com.maxin.exception.VerificationCodeException;
 import com.maxin.mapper.UserInfoMapper;
 import com.maxin.mapper.UserMapper;
-import com.maxin.result.Result;
 import com.maxin.service.UserService;
 import com.maxin.utils.RegexUtils;
 import com.maxin.utils.UserHolder;
@@ -49,10 +48,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 用户登录
+     *
      * @param loginFormDTO
      * @param session
+     * @return
      */
-    public void login(LoginFormDTO loginFormDTO, HttpSession session) {
+    public String login(LoginFormDTO loginFormDTO, HttpSession session) {
         if (RegexUtils.isPhoneInvalid(loginFormDTO.getPhone())) {
             throw new PhoneInvalidException(MessageConstant.PHONE_INVALID);
         }
@@ -81,6 +82,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisTemplate.opsForHash().putAll(tokenKey, userMap);
         redisTemplate.expire(tokenKey, RedisConstant.LOGIN_USER_TTL, TimeUnit.MINUTES);
         //session.setAttribute("user", user);
+
+        return token;
     }
 
     /**

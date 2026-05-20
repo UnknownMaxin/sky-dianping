@@ -10,3 +10,9 @@ maxin:
     host: localhost
     port: 6379
     database: 0
+  ai:
+    openai:
+      base-url: https://api.deepseek.com
+      api-key: ${maxin.ai.openai.api-key}
+      chat:
+        model: deepseek-v4-flash
